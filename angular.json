@@ -79,7 +79,8 @@
               "browserTarget": "pv-payments:build:production"
             },
             "development": {
-              "browserTarget": "pv-payments:build:development"
+              "browserTarget": "pv-payments:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
