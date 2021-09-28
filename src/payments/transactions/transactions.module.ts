@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from '../shared/shared.module';
 
 import { TransactionsRoutingModule } from './transactions-routing.module';
 import { TransactionsComponent } from './containers/transactions/transactions.component';
@@ -11,6 +12,7 @@ import { TransactionsComponent } from './containers/transactions/transactions.co
   ],
   imports: [
     CommonModule,
+    SharedModule,
     TransactionsRoutingModule
   ]
 })

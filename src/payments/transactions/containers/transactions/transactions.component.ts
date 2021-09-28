@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { TransactionsService } from '../../../shared/services/transactions/transactions.service';
+import { Observable } from 'rxjs';
+import { ColumnDef } from '../../../shared/models/table-config';
+import { columnDef } from './transactions.config';
+
+import { PagedTransactions, TransactionsService } from '../../../shared/services/transactions/transactions.service';
 
 @Component({
   selector: 'app-transactions',
@@ -8,13 +12,13 @@ import { TransactionsService } from '../../../shared/services/transactions/trans
 })
 export class TransactionsComponent implements OnInit {
 
-  transactions: any;
+  transactions$: Observable<PagedTransactions> = new Observable<PagedTransactions>();
+  tableColumns: ColumnDef[] = columnDef;
 
   constructor(private transactionsService: TransactionsService) { }
 
   ngOnInit(): void {
-    this.transactionsService.getAllPaymentTransactions()
-      .subscribe( paymentList => this.transactions = paymentList)
+    this.transactions$ = this.transactionsService.getAllPaymentTransactions();
   }
 
 }
