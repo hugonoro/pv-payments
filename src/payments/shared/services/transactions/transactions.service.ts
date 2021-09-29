@@ -13,8 +13,16 @@ export interface Transaction {
   amount: number;
   currency: string;
   description: string;
-  status: string;
+  status: Status;
   createdAt: Date;
+}
+
+export enum Status {
+  CAPTURED,
+  COMPLETED,
+  CREATED,
+  FAILED,
+  SETTLED
 }
 
 @Injectable({

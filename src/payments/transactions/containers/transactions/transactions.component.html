@@ -1,9 +1,9 @@
 <p-table #dt1
          [lazy]="true"
          [columns]="(tableColumns$ | async)!"
-         [value]="transactions"
-         [loading]="loading"
-         [totalRecords]="25"
+         [value]="(transactions$ | async)!"
+         [loading]="(isLoading$ | async)!"
+         [totalRecords]="(totalNumberOfTransactions$ | async)!"
          [first]="(tableOffset$ | async)!"
          [rows]="(tableLimit$ | async)!"
          [rowsPerPageOptions]="[5,10,15]"

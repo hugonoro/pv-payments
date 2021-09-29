@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgxsModule } from '@ngxs/store';
 import { SharedModule } from '../shared/shared.module';
 import { TableState } from '../shared/store/table.state';
+import { TransactionsState } from './store/transactions.state';
 
 import { TransactionsRoutingModule } from './transactions-routing.module';
 import { TransactionsComponent } from './containers/transactions/transactions.component';
@@ -16,7 +17,7 @@ import { TransactionsComponent } from './containers/transactions/transactions.co
     CommonModule,
     SharedModule,
     TransactionsRoutingModule,
-    NgxsModule.forFeature([TableState])
+    NgxsModule.forFeature([TableState, TransactionsState])
   ]
 })
 export class TransactionsModule { }
