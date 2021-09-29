@@ -15,12 +15,20 @@
          class="transactions-table">
   <ng-template pTemplate="caption">
     <div class="p-d-flex">
-      <!--      <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>-->
-      <span class="p-input-icon-left p-ml-auto">
-                    <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
-                           placeholder="Search keyword"/>
-                </span>
+      <span class="p-input-icon-right">
+        <i class="pi pi-spin pi-spinner"></i>
+        <p-autoComplete
+          [formControl]="statusFilter"
+          placeholder="Search by status"
+          [suggestions]="statusOptionsFiltered"
+          field="value"
+          [dropdown]="true"
+          [forceSelection]="true"
+          (completeMethod)="onSearch($event)"
+          (onSelect)="onSelect($event)"
+          (onClear)="onClear()">
+        </p-autoComplete>
+      </span>
     </div>
   </ng-template>
   <ng-template pTemplate="header" let-columns>

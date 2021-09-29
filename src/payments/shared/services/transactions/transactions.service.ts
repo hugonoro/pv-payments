@@ -13,11 +13,11 @@ export interface Transaction {
   amount: number;
   currency: string;
   description: string;
-  status: Status;
+  status: TransactionStatus;
   createdAt: Date;
 }
 
-export enum Status {
+export enum TransactionStatus {
   CAPTURED,
   COMPLETED,
   CREATED,

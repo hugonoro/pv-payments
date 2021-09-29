@@ -18,7 +18,8 @@ export interface TransactionsStateModel {
   defaults: {
     transactions: [],
     totalNumberOfTransactions: 0,
-    isLoading: false
+    isLoading: false,
+    filter: ''
   }
 })
 
@@ -64,5 +65,10 @@ export class TransactionsState {
           return throwError(error);
         })
       );
+  }
+
+  @Action(TransactionsActions.SetTransactionStatusFilter)
+  setStatusFilter(ctx: StateContext<TransactionsStateModel>, { payload }: TransactionsActions.SetTransactionStatusFilter) {
+    ctx.patchState({ filter: payload });
   }
 }

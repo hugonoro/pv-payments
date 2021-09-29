@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Select, Store } from '@ngxs/store';
+import { SelectItem } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { TRANSACTIONS_TABLE_KEY } from '../../../constants';
 import { ColumnDef } from '../../../shared/models/table-config';
@@ -9,7 +11,7 @@ import { TransactionsState } from '../../store/transactions.state';
 import * as TableActions from './../../../shared/store/table.actions';
 import * as TransactionsActions from './../../store/transactions.actions';
 
-import { Transaction } from '../../../shared/services/transactions/transactions.service';
+import { Transaction, TransactionStatus } from '../../../shared/services/transactions/transactions.service';
 import { columnDef } from './transactions.config';
 
 @Component({
@@ -27,11 +29,16 @@ export class TransactionsComponent implements OnInit {
   @Select(TableState.tableLimit(TRANSACTIONS_TABLE_KEY)) tableLimit$!: Observable<number>;
   @Select(TableState.tableOffset(TRANSACTIONS_TABLE_KEY)) tableOffset$!: Observable<number>;
 
+  statusOptions: SelectItem [] = [];
+  statusOptionsFiltered: SelectItem[] = [];
+  statusFilter: FormControl = new FormControl();
+
   constructor(private store: Store) {
   }
 
   ngOnInit(): void {
     this.initTable();
+    this.populateStatusFilter();
     this.loadTableData();
   }
 
@@ -49,10 +56,21 @@ export class TransactionsComponent implements OnInit {
     }
   }
 
+  populateStatusFilter() {
+    this.statusOptions = Object.values(TransactionStatus)
+      .filter(value => typeof value === 'string')
+      .map(value => ( { value } ));
+  }
+
   loadTableData() {
     const { limit, offset } = this.store.selectSnapshot(TableState.table(TRANSACTIONS_TABLE_KEY));
+    const filter = this.store.selectSnapshot(TransactionsState.filter);
 
-    this.store.dispatch(new TransactionsActions.GetAllPaymentTransactions({ page: offset / limit, size: limit }));
+    this.store.dispatch(new TransactionsActions.GetAllPaymentTransactions({
+      page: offset / limit,
+      size: limit,
+      ...( filter ? { status: filter } : null )
+    }));
   }
 
   onPaging(event: any) {
@@ -61,6 +79,20 @@ export class TransactionsComponent implements OnInit {
       limit: event.rows,
       offset: event.first
     }));
+    this.loadTableData();
+  }
+
+  onSearch(event: any) {
+    this.statusOptionsFiltered = [...this.statusOptions.filter(item => item.value.includes(event.query))];
+  }
+
+  onSelect(event: any) {
+    this.store.dispatch(new TransactionsActions.SetTransactionStatusFilter(event.value));
+    this.loadTableData();
+  }
+
+  onClear() {
+    this.store.dispatch(new TransactionsActions.SetTransactionStatusFilter(''))
     this.loadTableData();
   }
 }
