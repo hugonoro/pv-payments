@@ -9,8 +9,8 @@
          [rowsPerPageOptions]="[5,10,15]"
          [showCurrentPageReport]="true"
          [paginator]="true"
-         dataKey="id"
          [globalFilterFields]="['status']"
+         (onPage)="onPaging($event)"
          responsiveLayout="stack"
          class="transactions-table">
   <ng-template pTemplate="caption">

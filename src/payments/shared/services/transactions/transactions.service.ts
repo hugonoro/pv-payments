@@ -34,6 +34,6 @@ export class TransactionsService {
   }
 
   getAllPaymentTransactions(params?: HttpParams): Observable<PagedTransactions> {
-    return this.httpClient.get<PagedTransactions>('http://localhost:4200/api/payments?page=1')
+    return this.httpClient.get<PagedTransactions>('http://localhost:4200/api/payments', { params });
   }
 }
