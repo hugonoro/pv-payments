@@ -1,9 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ColumnDef } from '../../../shared/models/table-config';
-import { columnDef } from './transactions.config';
+import { TableState } from '../../../shared/store/table.state';
 
-import { PagedTransactions, TransactionsService } from '../../../shared/services/transactions/transactions.service';
+import * as TableActions from './../../../shared/store/table.actions';
+
+import {
+  PagedTransactions,
+  Transaction,
+  TransactionsService
+} from '../../../shared/services/transactions/transactions.service';
+import { columnDef } from './transactions.config';
 
 @Component({
   selector: 'app-transactions',
@@ -12,13 +20,38 @@ import { PagedTransactions, TransactionsService } from '../../../shared/services
 })
 export class TransactionsComponent implements OnInit {
 
-  transactions$: Observable<PagedTransactions> = new Observable<PagedTransactions>();
-  tableColumns: ColumnDef[] = columnDef;
+  @Select(TableState.tableColumns('transactions')) tableColumns$!: Observable<ColumnDef[]>;
+  @Select(TableState.tableLimit('transactions')) tableLimit$!: Observable<number>;
+  @Select(TableState.tableOffset('transactions')) tableOffset$!: Observable<number>;
 
-  constructor(private transactionsService: TransactionsService) { }
+  transactions: Transaction[] = [];
 
-  ngOnInit(): void {
-    this.transactions$ = this.transactionsService.getAllPaymentTransactions();
+  loading: boolean = true;
+
+  constructor(private store: Store,
+              private transactionsService: TransactionsService) {
   }
 
+  ngOnInit(): void {
+    this.initTable();
+    this.transactionsService.getAllPaymentTransactions()
+      .subscribe(data => {
+        this.transactions = data.items;
+        this.loading = false;
+      });
+  }
+
+  initTable() {
+    const tableState = this.store.selectSnapshot(TableState.table('transactions'));
+    if (!tableState) {
+      this.store.dispatch(new TableActions.InitTableState({
+        tableKey: 'transactions',
+        defaults: {
+          columns: columnDef,
+          limit: 5,
+          offset: 0
+        }
+      }));
+    }
+  }
 }

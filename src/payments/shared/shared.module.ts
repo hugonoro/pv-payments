@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 
 
@@ -10,7 +11,8 @@ import { TableModule } from 'primeng/table';
     CommonModule
   ],
   exports: [
-    TableModule
+    TableModule,
+    InputTextModule
   ]
 })
 export class SharedModule { }
