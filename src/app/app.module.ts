@@ -6,6 +6,10 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule } from '@ngxs/store';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { AuthModule } from '../auth/auth.module';
+import { AuthState } from '../auth/store/auth.state';
 import { environment } from '../environments/environment';
 import { PaymentsModule } from '../payments/payments.module';
 import { TableState } from '../payments/shared/store/table.state';
@@ -22,10 +26,13 @@ import { ngxsConfig } from './ngxs.config';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    AuthModule,
     PaymentsModule,
-    NgxsModule.forRoot([], ngxsConfig),
+    ToastModule,
+    NgxsModule.forRoot([AuthState], ngxsConfig),
     NgxsStoragePluginModule.forRoot({
         key: [
+          AuthState,
           TableState
         ]
       }
@@ -38,7 +45,9 @@ import { ngxsConfig } from './ngxs.config';
       name: 'Payments Store'
     })
   ],
-  providers: [],
+  providers: [
+    MessageService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
