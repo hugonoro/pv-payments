@@ -18,15 +18,18 @@
       <span class="p-input-icon-right">
         <i class="pi pi-spin pi-spinner"></i>
         <p-autoComplete
-          [formControl]="statusFilter"
           placeholder="Search by status"
-          [suggestions]="statusOptionsFiltered"
           field="value"
+          [formControl]="statusFilter"
+          [suggestions]="statusOptionsFiltered"
           [dropdown]="true"
           [forceSelection]="true"
           (completeMethod)="onSearch($event)"
           (onSelect)="onSelect($event)"
           (onClear)="onClear()">
+          <ng-template let-status pTemplate="item">
+            <div class="text-sm" [ngClass]="'status ' + status.value">{{status.value}}</div>
+          </ng-template>
         </p-autoComplete>
       </span>
     </div>
@@ -42,8 +45,23 @@
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr>
-      <td *ngFor="let col of columns">
-        <span class="p-column-title">{{col.header}}</span><span class="p-column-field">{{rowData[col.field]}}</span>
+      <td *ngFor="let col of columns" [ngSwitch]="col.type" [ngClass]="col.type">
+        <ng-container *ngSwitchCase="'text'">
+          <span class="p-column-title">{{col.header}}</span>
+          <span class="p-column-field">{{rowData[col.field]}}</span>
+        </ng-container>
+        <ng-container *ngSwitchCase="'enum'">
+          <span class="p-column-title">{{col.header}}</span>
+          <span [ngClass]="'status ' + rowData[col.field]" class="p-column-field">{{rowData[col.field]}}</span>
+        </ng-container>
+        <ng-container *ngSwitchCase="'date'">
+          <span class="p-column-title">{{col.header}}</span><span
+          class="p-column-field">{{rowData[col.field] | date}}</span>
+        </ng-container>
+        <ng-container *ngSwitchCase="'number'">
+          <span class="p-column-title">{{col.header}}</span>
+          <span class="p-column-field number">{{rowData[col.field] | number}}</span>
+        </ng-container>
       </td>
     </tr>
   </ng-template>

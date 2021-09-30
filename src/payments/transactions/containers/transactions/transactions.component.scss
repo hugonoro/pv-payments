@@ -1,0 +1,29 @@
+td {
+  &.number {
+    text-align: right !important;
+  }
+}
+
+.status {
+  color: white;
+  padding: 0.5rem;
+  display: inline-block;
+  width: 7rem;
+  text-align: center;
+
+  &.CREATED {
+    background-color: lightskyblue;
+  }
+  &.FAILED {
+    background-color: darkred;
+  }
+  &.SETTLED {
+    background-color: darkcyan;
+  }
+  &.COMPLETED {
+    background-color: darkgreen;
+  }
+  &.CAPTURED {
+    background-color: darkseagreen;
+  }
+}

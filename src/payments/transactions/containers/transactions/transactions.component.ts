@@ -87,12 +87,13 @@ export class TransactionsComponent implements OnInit {
   }
 
   onSelect(event: any) {
+    this.store.dispatch(new TableActions.SetPaging({ tableKey: TRANSACTIONS_TABLE_KEY, limit: 5, offset: 0 }));
     this.store.dispatch(new TransactionsActions.SetTransactionStatusFilter(event.value));
     this.loadTableData();
   }
 
   onClear() {
-    this.store.dispatch(new TransactionsActions.SetTransactionStatusFilter(''))
+    this.store.dispatch(new TransactionsActions.SetTransactionStatusFilter(''));
     this.loadTableData();
   }
 }

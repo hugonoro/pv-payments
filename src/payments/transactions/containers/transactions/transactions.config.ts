@@ -3,26 +3,32 @@ import { ColumnDef } from '../../../shared/models/table-config';
 export const columnDef: ColumnDef[] = [
   {
     field: 'id',
-    header: 'ID'
+    header: 'ID',
+    type: 'text'
   },
   {
     field: 'amount',
-    header: 'Amount'
+    header: 'Amount',
+    type: 'number'
   },
   {
     field: 'currency',
-    header: 'Currency'
+    header: 'Currency',
+    type: 'text'
   },
   {
     field: 'description',
-    header: 'Description'
+    header: 'Description',
+    type: 'text'
   },
   {
     field: 'status',
-    header: 'Status'
+    header: 'Status',
+    type: 'enum'
   },
   {
     field: 'createdAt',
-    header: 'Created At'
+    header: 'Created At',
+    type: 'date'
   },
 ]
