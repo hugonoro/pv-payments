@@ -1,6 +1,18 @@
+import { TransactionStatus } from '../../src/payments/shared/services/transactions/transactions.service';
+
 export class Transactions {
   navigate() {
     cy.visit('transactions');
+  }
+
+  filterByStatus(status: TransactionStatus) {
+    cy.get('.p-autocomplete-dropdown').click();
+    cy.get(`.p-autocomplete-item .status.${status}`).click()
+  }
+
+  validateIsFilteredByStatus(status: TransactionStatus) {
+    cy.get(`.transactions-table .p-column-field.status.${status}`)
+      .should('have.text', status)
   }
 
   validateDefaultNumberOfDisplayedTransactions() {
