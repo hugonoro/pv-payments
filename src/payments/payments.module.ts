@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AuthInterceptor } from '../auth/shared/interceptors/auth.interceptor';
 
 import { PaymentsRoutingModule } from './payments-routing.module';
+import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { SharedModule } from './shared/shared.module';
 
 
@@ -19,6 +20,11 @@ import { SharedModule } from './shared/shared.module';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     }
   ]
